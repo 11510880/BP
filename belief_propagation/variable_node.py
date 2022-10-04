@@ -20,7 +20,7 @@ def variable_node_function(y, sigma, weights, means, variances):
     :return:  m_out, v_out for edge d
     """
     edge_num = len(means)
-    three_gaussians = [EdgeMessage()] * edge_num
+    three_gaussians = [EdgeMessage() for i in range(edge_num)]
     # use m_edge, v_edge to form 3-Gaussian r_e(z)
     set_three_gaussians(edge_num, means, three_gaussians, variances, weights, y)
     # initialize recursion, these three lists represents a_z_old
@@ -98,9 +98,11 @@ def set_three_gaussians(edge_num, means, three_gaussians, variances, weights, y)
         h_edge = weights[i]
         v_in = variances[i]
         m_in = means[i]
-        b_edge = round(h_edge * (m_in - y))
+        b_edge = round(h_edge * (y - m_in))
         three_gaussian_edge = three_gaussians[i]
-        for i in range(1, 4):
-            three_gaussian_edge.vars[i - 1] = v_in
-            three_gaussian_edge.means[i - 1] = m_in + (b_edge + i - 2) / h_edge
-            three_gaussian_edge.coef[i - 1] = MIXTURE_COEEFICIENT
+        for j in range(1, 4):
+            three_gaussian_edge.vars[j - 1] = v_in
+            three_gaussian_edge.means[j - 1] = m_in + (b_edge + j - 2) / h_edge
+            three_gaussian_edge.coef[j - 1] = MIXTURE_COEEFICIENT
+        three_gaussians[i] = three_gaussian_edge
+

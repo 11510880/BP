@@ -1,3 +1,6 @@
+"""three-Gaussian model"""
+
+
 class EdgeMessage:
     """
     Three-Gaussian model

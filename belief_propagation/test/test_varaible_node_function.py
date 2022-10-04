@@ -13,7 +13,5 @@ class TestVariableNodeFunction(unittest.TestCase):
         self.assertAlmostEqual(v, 0.043252, delta=0.00001)
 
 
-
-
 if __name__ == '__main__':
     unittest.main()

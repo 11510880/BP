@@ -1,3 +1,4 @@
+"""utils for mixture Gaussian model """
 import math
 
 from belief_propagation.consts import E, PI

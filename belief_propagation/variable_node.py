@@ -1,11 +1,10 @@
 import math
 
-from code.edge_message import EdgeMessage
-from code.utils import coef_two_gaussian_multiplication, mean_two_gaussian_multiplication, \
+from belief_propagation.edge_message import EdgeMessage
+from belief_propagation.utils import coef_two_gaussian_multiplication, mean_two_gaussian_multiplication, \
     variance_two_gaussian_multiplication
 
 MIXTURE_COEEFICIENT = 1 / 3
-E = math.e
 
 
 def variable_node_function(y, sigma, weights, means, variances):
@@ -43,17 +42,21 @@ def variable_node_function(y, sigma, weights, means, variances):
 
 def update_with_channel_message(c_z_old, edge_num, m_z_old, sigma, v_z_old, y):
     # multiply each Gaussian with channel message
+    v_with_channel_message = [0]
+    m_with_channel_message = [0]
+    c_with_channel_message = [0]
     for k in range(1, 3 ** edge_num + 1):
-        v_with_channel_message = variance_two_gaussian_multiplication(sigma, v_z_old[k])
+        v_tmp = variance_two_gaussian_multiplication(sigma, v_z_old[k])
+        v_with_channel_message.append(v_tmp)
         # m_new, m_old, v_k, v_new, v_old
-        m_with_channel_message = mean_two_gaussian_multiplication(y, m_z_old[k], v_with_channel_message, sigma,
-                                                                  v_z_old[k])
+        m_with_channel_message.append(mean_two_gaussian_multiplication(y, m_z_old[k], v_tmp, sigma,
+                                                                  v_z_old[k]))
         # c for channel message is 1
-        c_with_channel_message = coef_two_gaussian_multiplication(1, c_z_old[k], y, m_z_old[k], sigma, v_z_old[k])
+        c_with_channel_message.append(coef_two_gaussian_multiplication(1, c_z_old[k], y, m_z_old[k], sigma, v_z_old[k]))
         # normalize with_channel_message
-        sum_c_with_channel_message = sum(c_with_channel_message)
-        c_with_channel_message_normlized = [i / sum_c_with_channel_message for i in c_with_channel_message]
-        return m_with_channel_message, v_with_channel_message, c_with_channel_message_normlized
+    sum_c_with_channel_message = sum(c_with_channel_message)
+    c_with_channel_message_normlized = [i / sum_c_with_channel_message for i in c_with_channel_message]
+    return m_with_channel_message, v_with_channel_message, c_with_channel_message_normlized
 
 
 def recursive_compute_a_z(c_z_old, e, m_z_old, three_gaussians, v_z_old):

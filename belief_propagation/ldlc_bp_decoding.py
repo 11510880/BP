@@ -1,4 +1,6 @@
 """Module for LDLC decoding using belief propagation"""
+import numpy as np
+from numpy.linalg import inv
 from belief_propagation.variable_node import variable_node_function
 
 VARIANCE_INDEX = 2
@@ -82,7 +84,7 @@ def ldlc_decoder(y, sigma, H, lmax):
                 check_node_message_dict[check_node][variable_node][
                     VARIANCE_INDEX] = variance_to_this_check_node
 
-    x = [0] * n
+    x_ = [0] * n
     for variable_node in variable_node_message_dict:
         check_node_info_for_one_variable_node = variable_node_message_dict[variable_node]
         means = [check_node_info_for_one_variable_node[node][MEAN_INDEX] for node in
@@ -91,7 +93,8 @@ def ldlc_decoder(y, sigma, H, lmax):
                 check_node_info_for_one_variable_node]
         edge_weights = [check_node_info_for_one_variable_node[node][WEIGHT_INDEX] for node in
                         check_node_info_for_one_variable_node]
-        x[variable_node], _ = variable_node_function(y[variable_node], edge_weights, sigma, means,
+        x_[variable_node], _ = variable_node_function(y[variable_node], edge_weights, sigma, means,
                                                      vars)
 
-    return x
+    b_hat = np.round(np.matmul(np.array(H), np.array(x_)))
+    return np.round(np.matmul(inv(np.array(H)), b_hat))

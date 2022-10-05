@@ -49,7 +49,7 @@ def ldlc_decoder(y, sigma, H, lmax):
             variable_info_for_one_check_onde = check_node_message_dict[check_node]
             for variable_node in variable_info_for_one_check_onde:
                 edge_weight = variable_info_for_one_check_onde[variable_node][WEIGHT_INDEX]
-                variable_nodes_set_exclude_one = variable_nodes_set - set(variable_node)
+                variable_nodes_set_exclude_one = variable_nodes_set - {variable_node}
 
                 mean = -1 / edge_weight * sum(variable_info_for_one_check_onde[node][WEIGHT_INDEX] *
                                               variable_info_for_one_check_onde[node][MEAN_INDEX] for
@@ -66,7 +66,7 @@ def ldlc_decoder(y, sigma, H, lmax):
             check_nodes_set = set(variable_node_message_dict[variable_node].keys())
             check_node_info_for_one_variable_node = variable_node_message_dict[variable_node]
             for check_node in check_node_info_for_one_variable_node:
-                set_exclude_one = check_nodes_set - set(check_node)
+                set_exclude_one = check_nodes_set - {check_node}
                 means_from_other_check_nodes = [
                     check_node_info_for_one_variable_node[node][MEAN_INDEX] for node in
                     list(set_exclude_one)]
@@ -93,7 +93,7 @@ def ldlc_decoder(y, sigma, H, lmax):
                 check_node_info_for_one_variable_node]
         edge_weights = [check_node_info_for_one_variable_node[node][WEIGHT_INDEX] for node in
                         check_node_info_for_one_variable_node]
-        x_[variable_node], _ = variable_node_function(y[variable_node], edge_weights, sigma, means,
+        x_[variable_node], _ = variable_node_function(y[variable_node], sigma, edge_weights, means,
                                                      vars)
 
     b_hat = np.round(np.matmul(np.array(H), np.array(x_)))

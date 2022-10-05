@@ -1,6 +1,6 @@
 ## Belief-Propagation Decoder for Low Density Lattice Codes
 
-This package is a python version of belief-propgation(BP) decoding of Low-Density Lattice Codes(LDLC).
+This package is a python version of belief-propgation(BP) decoding for Low-Density Lattice Codes(LDLC).
 
 There are two unittest cases in the /test folder. 
 User can run **test_variable_node_function.py** for testing variable_node_function.

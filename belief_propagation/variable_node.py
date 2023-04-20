@@ -6,7 +6,7 @@ from belief_propagation.utils import coef_two_gaussian_multiplication, \
     variance_two_gaussian_multiplication
 
 MIXTURE_COEEFICIENT = 1 / 3
-###
+
 
 def variable_node_function(channel_message, sigma, weights, means, variances):
     """

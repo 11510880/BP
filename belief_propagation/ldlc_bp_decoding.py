@@ -97,4 +97,4 @@ def ldlc_decoder(y, sigma, H, lmax):
                                                      vars)
 
     b_hat = np.round(np.matmul(np.array(H), np.array(x_)))
-    return np.round(np.matmul(inv(np.array(H)), b_hat))
+    return np.matmul(inv(np.array(H)), b_hat)

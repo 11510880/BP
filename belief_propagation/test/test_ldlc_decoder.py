@@ -16,7 +16,7 @@ class TestLdlcDecodingCase(unittest.TestCase):
              [0, 0, 0, 0, -0.25, 0.5, 0, 1]
              ]
         b = [1, 1, 3, 4, 2, 6, 7, 4]
-        lattice_x = np.round(np.matmul(inv(np.array(H)), np.array(b)))
+        lattice_x = np.matmul(inv(np.array(H)), np.array(b))
         sigma = 0.05
         lmax = 10
         np.random.seed(42)
